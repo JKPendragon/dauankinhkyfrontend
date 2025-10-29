@@ -4,6 +4,7 @@ import api from '../../services/api';
 import './ProductDetailPage.css';
 import { CartContext } from '../../context/CartContext';
 import { notifySuccess, notifyError } from '../../services/notificationService';
+import FullScreenLoader from '../Common/FullScreenLoader';
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
@@ -71,7 +72,7 @@ const ProductDetailPage = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
-  if (loading) return <div className="loading-message">Đang tải chi tiết sản phẩm...</div>;
+  if (loading) return <FullScreenLoader />;
   if (error) return <div className="error-message">{error}</div>;
   if (!product) return null;
 
@@ -101,7 +102,7 @@ const ProductDetailPage = () => {
         <div className="product-purchase-info">
           <h1>{product.name}</h1>
           <p className="price">{formatPrice(product.price)}</p>
-          <p className="description">{product.description}</p>
+          <div className="bio" dangerouslySetInnerHTML={{ __html: product.description }} />
           {isOutOfStock ? (
             <p className="out-of-stock-message">Hết hàng</p>
           ) : (
@@ -127,7 +128,7 @@ const ProductDetailPage = () => {
               <h3>{product.historicalFigure.name}</h3>
               <p className="period">Thời kỳ: {product.historicalFigure.period}</p>
 
-              <div className="bio"  dangerouslySetInnerHTML={{ __html: product.historicalFigure.bio }}/>
+              <div className="bio" dangerouslySetInnerHTML={{ __html: product.historicalFigure.bio }} />
             </div>
           </div>
         </div>
